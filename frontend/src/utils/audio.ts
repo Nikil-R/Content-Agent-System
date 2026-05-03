@@ -9,7 +9,7 @@ class TacticalAudio {
 
   private init() {
     if (!this.ctx) {
-      const AudioContextClass = window.AudioContext || (window as any).AudioContext;
+      const AudioContextClass = (window.AudioContext || (window as any).webkitAudioContext) as typeof AudioContext;
       this.ctx = new AudioContextClass();
     }
   }

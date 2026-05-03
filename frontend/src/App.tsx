@@ -73,7 +73,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchHistory();
-  }, []);
+  }, [fetchHistory]);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -126,7 +126,7 @@ const Dashboard = () => {
         socket.close();
       };
     }
-  }, [taskId, loading, state?.current_stage]);
+  }, [taskId, loading, state?.current_stage, fetchHistory]);
 
   // Scribe Streaming Effect
   useEffect(() => {

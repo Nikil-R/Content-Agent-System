@@ -39,15 +39,19 @@ graph TD
 ## 🚀 Key Engineering Pillars
 
 ### 📡 Real-Time Swarm Observability (WebSockets)
+
 The system features a high-fidelity **WebSocket & Redis Pub/Sub** architecture. As the agents progress through the cognitive phases, low-level kernel logs and system states are streamed instantly to the frontend. This provides a "God-eye view" of the system's low-level orchestration logic.
 
 ### 🧠 Additive State Management
+
 The platform utilizes an **Additive Shared State** model. Every agent receives the full context of previous agents but is only permitted to modify its designated namespace. This ensures:
+
 - **Traceability**: You can audit exactly what the 'Architect' planned vs what the 'Scribe' wrote.
 - **Validation**: The 'Judge' agent can verify the output against the original 'Parser' requirements.
 - **Resilience**: Task state is persisted in Redis and PostgreSQL, allowing for interrupted pipelines to be resumed without loss of data.
 
 ### 🔊 Tactical UI Haptics (Synthetic Audio)
+
 To elevate the user experience, the system includes a programmatic **Synthetic Audio Engine** built on the **Web Audio API**. By generating high-frequency tech chirps and pulse waves directly in the browser, the platform provides immersive feedback for agent transitions without relying on external binary assets.
 
 ---
@@ -55,12 +59,14 @@ To elevate the user experience, the system includes a programmatic **Synthetic A
 ## 🛠 The Technical Stack
 
 ### Backend (The Brain)
+
 - **FastAPI**: Asynchronous Python framework handling mission routing and task ingestion.
 - **Celery & Redis**: Distributed task queue management ensuring the UI remains responsive during heavy LLM synthesis.
 - **PostgreSQL**: Enterprise-grade persistence for the Intelligence Archive.
 - **Pydantic V2**: Strict data validation for complex agent inter-communication.
 
 ### Frontend (Mission Control)
+
 - **React 19 & Vite**: Ultra-fast build tooling and state-of-the-art UI lifecycle management.
 - **Tailwind CSS v4**: Utility-first design system implementing a premium **"Professional Noir"** aesthetic.
 - **Framer Motion**: Smooth, high-performance micro-animations for state transitions and data visualization.
@@ -72,12 +78,12 @@ To elevate the user experience, the system includes a programmatic **Synthetic A
 
 Each agent in the swarm is fine-tuned for a specific cognitive function:
 
-1.  **Lexis (Linguistic Parser)**: Deconstructs raw human directives into atomic semantic requirements.
-2.  **Architect (Structural Strategist)**: Synthesizes logical blueprints and hierarchical narrative frameworks.
-3.  **Scribe (Core Generator)**: Transforms blueprints into high-density, technically accurate text.
-4.  **Sentinel (Quality Auditor)**: Mercilessly audits for factual integrity, tone, and logical consistency.
-5.  **Refiner (Semantic Polisher)**: Reduces linguistic entropy, elevating vocabulary and sharpening conceptual clarity.
-6.  **Judge (Statistical Evaluator)**: Quantifies the final output against 6 core cognitive metrics (Depth, Clarity, etc.).
+1. **Lexis (Linguistic Parser)**: Deconstructs raw human directives into atomic semantic requirements.
+2. **Architect (Structural Strategist)**: Synthesizes logical blueprints and hierarchical narrative frameworks.
+3. **Scribe (Core Generator)**: Transforms blueprints into high-density, technically accurate text.
+4. **Sentinel (Quality Auditor)**: Mercilessly audits for factual integrity, tone, and logical consistency.
+5. **Refiner (Semantic Polisher)**: Reduces linguistic entropy, elevating vocabulary and sharpening conceptual clarity.
+6. **Judge (Statistical Evaluator)**: Quantifies the final output against 6 core cognitive metrics (Depth, Clarity, etc.).
 
 ---
 
@@ -94,6 +100,7 @@ The **Content Agent System** was benchmarked against a **Single-Agent Baseline**
 | **Context Retention** | 82.1% | **99.2%** | +17.1% |
 
 ### 📈 Why the Swarm Wins
+
 - **Iterative Refinement**: The Critic-Optimizer loop catches 90% of logical inconsistencies before delivery.
 - **Scope Restriction**: By limiting the 'Lexis' agent to just parsing, we eliminate context-drift that occurs in long-form, one-shot prompts.
 - **Final Validation**: The 'Judge' agent applies a statistical audit, ensuring only high-fidelity assets clear the production gate.
@@ -103,7 +110,9 @@ The **Content Agent System** was benchmarked against a **Single-Agent Baseline**
 ## ⚡ Setup & Deployment
 
 ### Environment Configuration
+
 Create a `.env` file in the root:
+
 ```env
 GROQ_API_KEY=your_key
 NVIDIA_API_KEY=your_key
@@ -113,11 +122,12 @@ REDIS_HOST=localhost
 ```
 
 ### Execution Protocol
-1.  **Start Services**: Ensure Redis and PostgreSQL are active.
-2.  **Initialize DB**: `python backend/init_db.py`
-3.  **Launch API**: `uvicorn app.main:app --reload`
-4.  **Launch Workers**: `celery -A app.worker.tasks worker --loglevel=info`
-5.  **Launch Dashboard**: `npm run dev`
+
+1. **Start Services**: Ensure Redis and PostgreSQL are active.
+2. **Initialize DB**: `python backend/init_db.py`
+3. **Launch API**: `uvicorn app.main:app --reload`
+4. **Launch Workers**: `celery -A app.worker.tasks worker --loglevel=info`
+5. **Launch Dashboard**: `npm run dev`
 
 ---
 
@@ -144,7 +154,9 @@ The Content Agent System provides a decoupled REST API for mission management an
 ---
 
 ## 🎓 Why This Matters
+
 The **Content Agent System** is not just an AI wrapper; it is an **Orchestration Framework**. It solves real-world engineering challenges:
+
 - **Asynchronous Scalability**: Handling long-running LLM tasks without blocking the main event loop.
 - **Real-Time Distributed Communication**: Managing state across decoupled services via WebSockets.
 - **State Persistence & Auditability**: Ensuring AI behavior is transparent, traceable, and persistent.
@@ -153,5 +165,10 @@ The **Content Agent System** is not just an AI wrapper; it is an **Orchestration
 ---
 
 <div align="center">
-  <sub>Developed by Nikil R // Content Agent System © 2026</sub>
+  <p>
+    <a href="https://github.com/Nikil-R"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" /></a>
+    <a href="https://www.linkedin.com/in/nikil-r1/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
+  </p>
+  <sub>Developed with 🧪 by Nikil R</sub><br/>
+  <sub>Content Agent System © 2026 // Mission: Distributed Intelligence Synthesis</sub>
 </div>

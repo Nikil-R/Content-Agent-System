@@ -61,6 +61,7 @@ class AgentStage(str, Enum):
     OPTIMIZER = "optimizer"
     FORMATTER = "formatter"
     EVALUATOR = "evaluator"
+    AWAITING_APPROVAL = "awaiting_approval"
     COMPLETED = "completed"
     FAILED = "failed"
 

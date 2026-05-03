@@ -1,17 +1,17 @@
-# 🌌 ORION: Distributed Neural Orchestration Platform
+# 🌌 Content Agent System: Distributed Multi-Agent Orchestration
 
 ![License](https://img.shields.io/badge/Status-Production--Ready-emerald?style=for-the-badge)
 ![Stack](https://img.shields.io/badge/Architecture-Distributed--Agentic-blue?style=for-the-badge)
 ![UI](https://img.shields.io/badge/UI-Professional--Noir-black?style=for-the-badge)
 ![Database](https://img.shields.io/badge/Database-PostgreSQL-336791?style=for-the-badge&logo=postgresql)
 
-**Orion** is a state-of-the-art intelligence synthesis engine designed to demonstrate the power of **multi-agent collaborative orchestration**. Unlike traditional single-prompt AI tools, Orion utilizes a distributed swarm of 6 specialized cognitive nodes to deconstruct, plan, synthesize, and validate high-density intellectual assets.
+**Content Agent System** is a state-of-the-art intelligence synthesis engine designed to demonstrate the power of **multi-agent collaborative orchestration**. Unlike traditional single-prompt AI tools, this system utilizes a distributed swarm of 6 specialized cognitive nodes to deconstruct, plan, synthesize, and validate high-density intellectual assets.
 
 ---
 
 ## 🏛 System Architecture
 
-Orion is engineered for resilience and zero-latency observability. It follows a **Decoupled Orchestration Pattern**, separating the user interface from the heavy cognitive execution layer.
+The Content Agent System is engineered for resilience and zero-latency observability. It follows a **Decoupled Orchestration Pattern**, separating the user interface from the heavy cognitive execution layer.
 
 ```mermaid
 graph TD
@@ -39,7 +39,7 @@ graph TD
 ## 🚀 Key Engineering Pillars
 
 ### 📡 Real-Time Swarm Observability (WebSockets)
-Orion features a high-fidelity **WebSocket & Redis Pub/Sub** architecture. As the agents progress through the cognitive phases, low-level kernel logs and system states are streamed instantly to the frontend. This provides a "God-eye view" of the system's low-level orchestration logic.
+The system features a high-fidelity **WebSocket & Redis Pub/Sub** architecture. As the agents progress through the cognitive phases, low-level kernel logs and system states are streamed instantly to the frontend. This provides a "God-eye view" of the system's low-level orchestration logic.
 
 ### 🧠 Additive State Management
 The platform utilizes an **Additive Shared State** model. Every agent receives the full context of previous agents but is only permitted to modify its designated namespace. This ensures:
@@ -48,7 +48,7 @@ The platform utilizes an **Additive Shared State** model. Every agent receives t
 - **Resilience**: Task state is persisted in Redis and PostgreSQL, allowing for interrupted pipelines to be resumed without loss of data.
 
 ### 🔊 Tactical UI Haptics (Synthetic Audio)
-To elevate the user experience, Orion includes a programmatic **Synthetic Audio Engine** built on the **Web Audio API**. By generating high-frequency tech chirps and pulse waves directly in the browser, the platform provides immersive feedback for agent transitions without relying on external binary assets.
+To elevate the user experience, the system includes a programmatic **Synthetic Audio Engine** built on the **Web Audio API**. By generating high-frequency tech chirps and pulse waves directly in the browser, the platform provides immersive feedback for agent transitions without relying on external binary assets.
 
 ---
 
@@ -70,7 +70,7 @@ To elevate the user experience, Orion includes a programmatic **Synthetic Audio 
 
 ## 🤖 The Swarm Protocols
 
-Each agent in the Orion swarm is fine-tuned for a specific cognitive function:
+Each agent in the swarm is fine-tuned for a specific cognitive function:
 
 1.  **Lexis (Linguistic Parser)**: Deconstructs raw human directives into atomic semantic requirements.
 2.  **Architect (Structural Strategist)**: Synthesizes logical blueprints and hierarchical narrative frameworks.
@@ -102,8 +102,8 @@ REDIS_HOST=localhost
 
 ---
 
-## 🎓 Why This Matters (For Interviewers)
-Orion is not just an AI wrapper; it is an **Orchestration Framework**. It solves real-world engineering challenges:
+## 🎓 Why This Matters
+The **Content Agent System** is not just an AI wrapper; it is an **Orchestration Framework**. It solves real-world engineering challenges:
 - **Asynchronous Scalability**: Handling long-running LLM tasks without blocking the main event loop.
 - **Real-Time Distributed Communication**: Managing state across decoupled services via WebSockets.
 - **State Persistence & Auditability**: Ensuring AI behavior is transparent, traceable, and persistent.
@@ -112,5 +112,5 @@ Orion is not just an AI wrapper; it is an **Orchestration Framework**. It solves
 ---
 
 <div align="center">
-  <sub>Developed by **Nikil R** // ORION NEURAL ENGINE © 2026</sub>
+  <sub>Developed by **Nikil R** // Content Agent System © 2026</sub>
 </div>

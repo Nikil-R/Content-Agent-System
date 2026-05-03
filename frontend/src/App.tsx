@@ -348,7 +348,7 @@ const Dashboard = () => {
                       </article>
 
                       <div className="mt-32 pt-12 border-t border-white/5 flex justify-between items-center text-[10px] font-black uppercase tracking-[0.3em] text-text-muted">
-                        <div>Orion Neural Engine // Asset-{taskId?.slice(0, 8)}</div>
+                        <div>Content Agent System // Asset-{taskId?.slice(0, 8)}</div>
                         <div>Generated {new Date().toLocaleDateString()} // Confidential</div>
                       </div>
                     </div>
@@ -369,7 +369,7 @@ const Dashboard = () => {
                       <div className="max-w-2xl space-y-8">
                          <h2 className="text-4xl md:text-5xl font-black font-heading uppercase italic tracking-tighter leading-none">Awaiting Neural Sequence.</h2>
                          <p className="text-text-dim text-xl font-medium leading-relaxed">
-                            Input a directive to activate the Orion swarm. Our agents will collaboratively synthesize high-fidelity intellectual assets through multi-stage peer refinement.
+                            Input a directive to activate the Content Agent swarm. Our agents will collaboratively synthesize high-fidelity intellectual assets through multi-stage peer refinement.
                          </p>
                       </div>
                    </div>
@@ -401,7 +401,7 @@ const Dashboard = () => {
          <div className="flex flex-col md:flex-row items-center justify-between gap-12">
             <div className="flex items-center gap-4 opacity-40">
                <Zap size={20} fill="currentColor" className="text-primary" />
-               <span className="text-xs font-black uppercase tracking-[0.3em]">ORION NEURAL ENGINE © 2026</span>
+               <span className="text-xs font-black uppercase tracking-[0.3em]">CONTENT AGENT SYSTEM © 2026</span>
             </div>
             
             <div className="flex items-center gap-8 bg-surface/50 px-6 py-3 rounded-2xl border border-border">

@@ -25,8 +25,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onHistoryClick }) => {
             </div>
           </div>
           <div className="flex flex-col">
-            <span className="text-lg font-black tracking-tight font-heading leading-none">ORION</span>
-            <span className="text-[10px] font-bold text-primary tracking-[0.2em] uppercase">Neural Orchestrator</span>
+            <span className="text-lg font-black tracking-tight font-heading leading-none">CONTENT AGENT</span>
+            <span className="text-[10px] font-bold text-primary tracking-[0.2em] uppercase">Multi-Agent Suite</span>
           </div>
         </Link>
         

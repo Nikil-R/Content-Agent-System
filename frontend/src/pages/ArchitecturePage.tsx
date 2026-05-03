@@ -33,7 +33,7 @@ const ArchitecturePage: React.FC = () => {
              The <span className="shimmer-text italic">Distributed Intelligence</span> Protocol.
            </h1>
            <p className="text-xl text-text-dim font-medium leading-relaxed">
-             Orion is built on a distributed agentic framework that prioritizes asynchronous execution, state isolation, and collaborative synthesis.
+             The Content Agent System is built on a distributed agentic framework that prioritizes asynchronous execution, state isolation, and collaborative synthesis.
            </p>
         </header>
 
@@ -103,7 +103,7 @@ const ArchitecturePage: React.FC = () => {
                  <div className="space-y-4">
                     <h2 className="text-4xl font-black font-heading tracking-tight">The "Shared State" Pipeline</h2>
                     <p className="text-lg text-text-dim font-medium leading-relaxed">
-                      Unlike traditional linear scripts, Orion agents communicate via a centralized <strong>SharedState</strong> schema. This allows for non-destructive, additive intelligence gathering where each agent validates the previous one's output before contributing.
+                      Unlike traditional linear scripts, the Content Agent System agents communicate via a centralized <strong>SharedState</strong> schema. This allows for non-destructive, additive intelligence gathering where each agent validates the previous one's output before contributing.
                     </p>
                  </div>
 
@@ -202,7 +202,7 @@ const ArchitecturePage: React.FC = () => {
       <footer className="max-w-7xl mx-auto px-8 py-16 border-t border-border mt-20 flex flex-col md:flex-row items-center justify-between gap-12 opacity-40">
          <div className="flex items-center gap-4">
             <Zap size={20} fill="currentColor" className="text-primary" />
-            <span className="text-xs font-black uppercase tracking-[0.3em]">ORION NEURAL ENGINE © 2026</span>
+            <span className="text-xs font-black uppercase tracking-[0.3em]">CONTENT AGENT SYSTEM © 2026</span>
          </div>
       </footer>
     </div>

@@ -1,22 +1,36 @@
-FROM python:3.11-slim
+FROM python:3.10-slim
 
 WORKDIR /app
 
+# Prevent Python from writing pyc files & enable logs immediately
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+# Ensure the 'app' directory is in the python path for absolute imports
+ENV PYTHONPATH=/app
+
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    build-essential \
-    libpq-dev \
+    gcc \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
+# Create a non-root user for security (Moved after deps install for cleaner layer caching)
+RUN useradd -m appuser
+
+# Copy project files
 COPY . .
 
-# Set environment variables
-ENV PYTHONPATH=/app
+# Set ownership to the non-root user
+RUN chown -R appuser:appuser /app
+USER appuser
 
-# Default command (can be overridden in docker-compose for worker)
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Healthcheck using the lightweight /health endpoint
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl --fail http://localhost:8000/health || exit 1
+
+# Correct entrypoint with worker scaling
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "2"]

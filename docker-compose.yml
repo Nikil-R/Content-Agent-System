@@ -1,56 +1,52 @@
-version: '3.8'
-
 services:
-  api:
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        - VITE_API_URL=${VITE_API_URL}
+    image: content-agent-frontend
+    ports:
+      - "3000:80"
+    restart: unless-stopped
+    depends_on:
+      - backend
+
+  backend:
     build: ./backend
+    image: content-agent-backend
     ports:
       - "8000:8000"
-    environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - REDIS_HOST=redis
-      - POSTGRES_SERVER=db
+    restart: unless-stopped
+    env_file:
+      - .env
     depends_on:
       - redis
       - db
-    networks:
-      - agent-network
 
-  worker:
+  celery:
     build: ./backend
-    command: celery -A app.worker.tasks.celery_app worker --loglevel=info --queues=main-queue
-    environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - REDIS_HOST=redis
-      - POSTGRES_SERVER=db
+    image: content-agent-backend
+    command: celery -A app.worker.celery_app worker --loglevel=info
+    restart: unless-stopped
+    env_file:
+      - .env
     depends_on:
       - redis
       - db
-    networks:
-      - agent-network
 
   redis:
     image: redis:7-alpine
-    ports:
-      - "6379:6379"
-    networks:
-      - agent-network
+    restart: unless-stopped
 
   db:
     image: postgres:15-alpine
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=content_agent_db
+    restart: unless-stopped
+    env_file:
+      - .env
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    networks:
-      - agent-network
-
-networks:
-  agent-network:
-    driver: bridge
 
 volumes:
   postgres_data:

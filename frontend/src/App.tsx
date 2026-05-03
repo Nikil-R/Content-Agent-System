@@ -16,7 +16,7 @@ import { tacticalAudio } from './utils/audio';
 import { History as HistoryIcon, X, Clock, ArrowRight } from 'lucide-react';
 import { Navbar } from './components/Navbar';
 
-const API_BASE = "http://localhost:8000";
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 interface LogEntry {
   timestamp: string;
@@ -72,8 +72,24 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    fetchHistory();
-  }, [fetchHistory]);
+    let isMounted = true;
+    
+    const loadData = async () => {
+      try {
+        const res = await axios.get(`${API_BASE}/history`);
+        if (isMounted) {
+          setHistory(res.data);
+        }
+      } catch (err) {
+        if (isMounted) {
+          console.error("History fetch failed", err);
+        }
+      }
+    };
+
+    loadData();
+    return () => { isMounted = false; };
+  }, []);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -85,7 +101,8 @@ const Dashboard = () => {
   useEffect(() => {
     if (taskId && loading) {
       // Connect to WebSocket
-      const socket = new WebSocket(`ws://localhost:8000/ws/${taskId}`);
+      const wsUrl = API_BASE.replace(/^http/, 'ws');
+      const socket = new WebSocket(`${wsUrl}/ws/${taskId}`);
       ws.current = socket;
 
       socket.onopen = () => {

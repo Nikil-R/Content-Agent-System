@@ -7,9 +7,10 @@ from loguru import logger
 from datetime import datetime
 import json
 import redis
+from app.core.config import settings
 
 # Redis for broadcasting
-redis_client = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
+redis_client = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=0, decode_responses=True)
 
 def update_db_task(state: SharedState):
     db = SessionLocal()

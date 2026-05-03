@@ -6,8 +6,8 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
     
     # LLM Configuration
-    GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "your-key-here")
-    NVIDIA_API_KEY: str = os.getenv("NVIDIA_API_KEY", "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")
+    GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "")
+    NVIDIA_API_KEY: str = os.getenv("NVIDIA_API_KEY", "")
     DEFAULT_MODEL: str = "llama-3.3-70b-versatile"
     NVIDIA_MODEL: str = os.getenv("NVIDIA_MODEL", "meta/llama-3.1-70b-instruct")
     

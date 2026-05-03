@@ -30,7 +30,7 @@ app.add_middleware(
 from app.core.config import settings
 
 # Redis for Pub/Sub
-redis_client = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=0, decode_responses=True)
+redis_client = redis.from_url(settings.REDIS_URL, decode_responses=True)
 
 class ConnectionManager:
     def __init__(self):

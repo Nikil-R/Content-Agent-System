@@ -7,13 +7,15 @@
 ![React](https://img.shields.io/badge/React_19-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Redis](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)
 
-**Live Website:** [https://content-agent-system.vercel.app/](https://content-agent-system.vercel.app/)
+**Live Demo:** [https://content-agent-system.vercel.app/](https://content-agent-system.vercel.app/)
+
+*(Optional: Insert a beautiful screenshot or GIF of your UI here)*
+<!-- ![Dashboard Screenshot](./assets/screenshot.png) -->
 
 ## Project Overview
 The **Video Script Engine** (formerly Content Agent System) is an autonomous orchestration layer that synchronizes multiple specialized LLM agents into a high-retention video production pipeline. By utilizing a swarm of 6 specialized cognitive nodes, the system autonomously deconstructs topics, architectures timelines, drafts dual-column audio/visual scripts, and audits for viewer retention, delivering production-ready scripts for YouTube, Instagram Reels, and TikTok.
 
 ## System Architecture
-The application is built on a **Decoupled Orchestration Pattern**, isolating the user interface from the heavy cognitive execution layer using Celery and Redis.
 
 ```mermaid
 graph TD
@@ -55,6 +57,27 @@ graph TD
 - **Backend:** FastAPI, Python 3.10+, Celery, Redis, SQLite/PostgreSQL, Pydantic V2.
 - **Frontend:** React 19, Vite, Tailwind CSS v4, Framer Motion, Axios.
 - **AI Models:** Groq (`llama-3.3-70b-versatile` / `llama3-70b-8192`), NVIDIA (`meta/llama-3.1-70b-instruct`).
+
+## Project Structure
+```text
+Content-Agent-System/
+├── backend/
+│   ├── app/
+│   │   ├── agents/      # LLM Agent Implementations (Producer, Director, etc.)
+│   │   ├── core/        # Orchestration logic, Configuration, Database
+│   │   ├── worker/      # Celery Task Definitions
+│   │   ├── main.py      # FastAPI entrypoint
+│   ├── requirements.txt
+│   └── init_db.py
+├── frontend/
+│   ├── src/
+│   │   ├── components/  # React UI Components
+│   │   ├── pages/       # Next-gen UI Pages
+│   │   └── App.tsx      # Main application router
+│   ├── tailwind.config.js
+│   └── package.json
+└── docker-compose.yml
+```
 
 ## Engineering Highlights
 - **Decoupled Execution:** LLM synthesis is compute-heavy. Decoupling the execution layer via Celery ensures the web server remains 100% responsive.

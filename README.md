@@ -160,4 +160,4 @@ npm run dev
 - **Timeline Export**: Exporting XML/EDL files directly into Premiere Pro or DaVinci Resolve.
 
 ## License
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the [MIT License](./LICENSE) - see the LICENSE file for details.

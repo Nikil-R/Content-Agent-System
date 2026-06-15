@@ -2,7 +2,12 @@
 
 ![License](https://img.shields.io/badge/License-MIT-emerald?style=for-the-badge)
 ![Architecture](https://img.shields.io/badge/Architecture-Distributed--Agentic-blue?style=for-the-badge)
-![UI](https://img.shields.io/badge/UI-React--Vite-black?style=for-the-badge)
+![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)
+![React](https://img.shields.io/badge/React_19-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Redis](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)
+
+**Live Website:** [https://content-agent-system.vercel.app/](https://content-agent-system.vercel.app/)
 
 ## Project Overview
 The **Video Script Engine** (formerly Content Agent System) is an autonomous orchestration layer that synchronizes multiple specialized LLM agents into a high-retention video production pipeline. By utilizing a swarm of 6 specialized cognitive nodes, the system autonomously deconstructs topics, architectures timelines, drafts dual-column audio/visual scripts, and audits for viewer retention, delivering production-ready scripts for YouTube, Instagram Reels, and TikTok.

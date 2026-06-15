@@ -83,7 +83,7 @@ const AgentsPage: React.FC = () => {
              Meet the <br/> <span className="shimmer-text italic">Production Team</span>.
            </h1>
            <p className="text-xl text-text-dim font-medium leading-relaxed">
-             The Video Script Engine is not a single model. It is a synchronized orchestra of six specialized agents, each fine-tuned for a specific phase of the high-retention video production lifecycle.
+             The Content Agent System is not a single model. It is a synchronized orchestra of six specialized agents, each fine-tuned for a specific phase of the high-retention video production lifecycle.
            </p>
         </header>
 
@@ -132,7 +132,7 @@ const AgentsPage: React.FC = () => {
       <footer className="max-w-7xl mx-auto px-8 py-16 border-t border-border mt-20 flex flex-col md:flex-row items-center justify-between gap-12 opacity-40">
          <div className="flex items-center gap-4">
             <Zap size={20} fill="currentColor" className="text-primary" />
-            <span className="text-xs font-black uppercase tracking-[0.3em]">VIDEO SCRIPT ENGINE © 2026</span>
+            <span className="text-xs font-black uppercase tracking-[0.3em]">CONTENT AGENT SYSTEM © 2026</span>
          </div>
       </footer>
     </div>

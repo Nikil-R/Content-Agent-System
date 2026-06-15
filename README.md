@@ -1,4 +1,4 @@
-# 🎬 Video Script Engine: Autonomous Agentic Orchestration
+# 🎬 Content Agent System: Autonomous Agentic Orchestration
 
 ![License](https://img.shields.io/badge/License-MIT-emerald?style=for-the-badge)
 ![Architecture](https://img.shields.io/badge/Architecture-Distributed--Agentic-blue?style=for-the-badge)
@@ -9,11 +9,8 @@
 
 **Live Demo:** [https://content-agent-system.vercel.app/](https://content-agent-system.vercel.app/)
 
-*(Optional: Insert a beautiful screenshot or GIF of your UI here)*
-<!-- ![Dashboard Screenshot](./assets/screenshot.png) -->
-
 ## Project Overview
-The **Video Script Engine** (formerly Content Agent System) is an autonomous orchestration layer that synchronizes multiple specialized LLM agents into a high-retention video production pipeline. By utilizing a swarm of 6 specialized cognitive nodes, the system autonomously deconstructs topics, architectures timelines, drafts dual-column audio/visual scripts, and audits for viewer retention, delivering production-ready scripts for YouTube, Instagram Reels, and TikTok.
+The **Content Agent System** is an autonomous orchestration layer that synchronizes multiple specialized LLM agents into a high-retention video production pipeline. By utilizing a swarm of 6 specialized cognitive nodes, the system autonomously deconstructs topics, architectures timelines, drafts dual-column audio/visual scripts, and audits for viewer retention, delivering production-ready scripts for YouTube, Instagram Reels, and TikTok.
 
 ## System Architecture
 
@@ -85,7 +82,7 @@ Content-Agent-System/
 - **Cognitive Specialization:** By limiting each agent's context window and scope to a single task (e.g., just planning, or just auditing), hallucination rates drop by 85%.
 
 ## Performance and Load Testing
-The **Video Script Engine** was benchmarked against single-prompt script generators:
+The **Content Agent System** was benchmarked against single-prompt script generators:
 - **Hook Strength & Retention Prediction:** +38% improvement due to the dedicated Auditor-Optimizer loop.
 - **Visual/Audio Consistency:** 96.8% adherence to dual-column formatting compared to 76.4% on a single-agent baseline.
 - **Throughput:** Capable of generating a 10-minute YouTube video script in under 60 seconds using LPU hardware (Groq).

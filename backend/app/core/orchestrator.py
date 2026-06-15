@@ -54,7 +54,7 @@ class ContentOrchestrator:
             if state.current_stage == AgentStage.PLANNER:
                 self._log_step(state, "Planner", "Architecting content blueprint and narrative flow...")
                 state.outline = self.planner.execute(state.structured_task)
-                self._log_step(state, "Planner", f"Created outline with {len(state.outline.sections)} logical sections.")
+                self._log_step(state, "Planner", f"Created script outline with {len(state.outline.scenes)} distinct scenes.")
                 
                 # AUTOMATIC PROGRESSION: Skip manual approval
                 state.current_stage = AgentStage.WRITER

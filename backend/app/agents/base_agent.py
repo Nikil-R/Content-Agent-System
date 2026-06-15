@@ -64,7 +64,7 @@ class BaseAgent:
         import httpx
         
         headers = {
-            "Authorization": "Bearer " + settings.NVIDIA_API_KEY,
+            "Authorization": "Bearer " + settings.NVIDIA_API_KEY.strip(),
             "Accept": "application/json",
         }
         
@@ -86,7 +86,7 @@ class BaseAgent:
             ],
             "temperature": 0.2,
             "top_p": 0.7,
-            "max_tokens": 1024,
+            "max_tokens": 4096,
         }
         
         with httpx.Client() as client:
@@ -95,7 +95,7 @@ class BaseAgent:
                     "https://integrate.api.nvidia.com/v1/chat/completions",
                     headers=headers,
                     json=payload,
-                    timeout=60.0
+                    timeout=120.0
                 )
                 
                 if response.status_code != 200:

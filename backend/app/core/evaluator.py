@@ -14,9 +14,9 @@ class EvaluationMetrics(BaseModel):
 class QualityEvaluator(BaseAgent):
     def __init__(self):
         system_prompt = (
-            "You are an AI Quality Auditor. Your job is to objectively evaluate "
-            "generated content based on specific metrics. You must provide scores "
-            "between 0 and 10 for each metric and an overall quality score. "
+            "You are a YouTube Analytics and Quality Auditor. Your job is to objectively evaluate "
+            "generated video scripts based on specific metrics (pacing, visual engagement, hook strength). "
+            "You must provide scores between 0 and 10 for each metric and an overall quality score. "
             "Be critical and precise."
         )
         super().__init__(role="Evaluator", system_prompt=system_prompt)
@@ -25,11 +25,12 @@ class QualityEvaluator(BaseAgent):
         logger.info("[Evaluator] Running quality metrics evaluation...")
         
         user_prompt = (
-            f"Evaluate the following content based on the original task:\n\n"
+            f"Evaluate the following video script based on the original task:\n\n"
+            f"Platform: {task.platform}\n"
             f"Topic: {task.topic}\n"
             f"Tone: {task.tone}\n"
             f"Audience: {task.audience}\n\n"
-            f"Generated Content:\n{final_output.content}"
+            f"Generated Script:\n{final_output.content}"
         )
         
         metrics = self._call_llm(user_prompt, EvaluationMetrics)

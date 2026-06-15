@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import axios from 'axios';
 import { PipelineStepper } from './components/PipelineStepper';
-import { NeuralBackground } from './components/NeuralBackground';
 import { RadarChart } from './components/RadarChart';
 import { 
   Zap, Download, Loader2, Sparkles, 
@@ -48,7 +47,6 @@ interface HistoryItem {
   created_at: string;
 }
 
-
 const Dashboard = () => {
   const [prompt, setPrompt] = useState("");
   const [taskId, setTaskId] = useState<string | null>(null);
@@ -61,7 +59,6 @@ const Dashboard = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const ws = useRef<WebSocket | null>(null);
 
-  // Load History
   const fetchHistory = useCallback(async () => {
     try {
       const res = await axios.get(`${API_BASE}/history`);
@@ -73,20 +70,14 @@ const Dashboard = () => {
 
   useEffect(() => {
     let isMounted = true;
-    
     const loadData = async () => {
       try {
         const res = await axios.get(`${API_BASE}/history`);
-        if (isMounted) {
-          setHistory(res.data);
-        }
+        if (isMounted) setHistory(res.data);
       } catch (err) {
-        if (isMounted) {
-          console.error("History fetch failed", err);
-        }
+        if (isMounted) console.error("History fetch failed", err);
       }
     };
-
     loadData();
     return () => { isMounted = false; };
   }, []);
@@ -97,24 +88,19 @@ const Dashboard = () => {
     }
   }, [state?.logs]);
 
-  // WebSocket Connection
   useEffect(() => {
     if (taskId && loading) {
-      // Connect to WebSocket
       const wsUrl = API_BASE.replace(/^http/, 'ws');
       const socket = new WebSocket(`${wsUrl}/ws/${taskId}`);
       ws.current = socket;
 
-      socket.onopen = () => {
-        console.log("WebSocket Connected");
-      };
+      socket.onopen = () => console.log("WebSocket Connected");
 
       socket.onmessage = (event) => {
         const message = JSON.parse(event.data);
         if (message.type === 'status_update') {
           const newState = message.data.meta;
           
-          // Sound trigger on stage change
           if (newState.current_stage !== state?.current_stage) {
             tacticalAudio.playChirp();
           }
@@ -124,7 +110,7 @@ const Dashboard = () => {
           if (newState.current_stage === 'completed') {
             setLoading(false);
             tacticalAudio.playSuccess();
-            fetchHistory(); // Refresh history after completion
+            fetchHistory();
             socket.close();
           }
         }
@@ -135,34 +121,33 @@ const Dashboard = () => {
         setLoading(false);
       };
 
-      socket.onclose = () => {
-        console.log("WebSocket Disconnected");
-      };
+      socket.onclose = () => console.log("WebSocket Disconnected");
 
-      return () => {
-        socket.close();
-      };
+      return () => socket.close();
     }
-  }, [taskId, loading, state?.current_stage, fetchHistory]);
+  }, [taskId, loading, fetchHistory]);
 
-  // Scribe Streaming Effect
   useEffect(() => {
     if (state?.final_output?.content) {
       const fullContent = state.final_output.content;
       
-      // Only start if not already started for this content
-      if (streamedContent === "") {
-        const timer = setInterval(() => {
-          setStreamedContent((prev) => {
-            const next = fullContent.slice(0, prev.length + 10);
-            if (next.length >= fullContent.length) clearInterval(timer);
-            return next;
-          });
-        }, 10);
-        return () => clearInterval(timer);
-      }
+      // Start streaming only if we have full content and haven't started yet
+      // We check this via a ref or just by clearing it when the state is null.
+      // The easiest way is to let the effect run once when final_output.content changes.
+      setStreamedContent("");
+      let currentIndex = 0;
+      
+      const timer = setInterval(() => {
+        currentIndex += 10;
+        setStreamedContent(fullContent.slice(0, currentIndex));
+        if (currentIndex >= fullContent.length) {
+          clearInterval(timer);
+        }
+      }, 10);
+      
+      return () => clearInterval(timer);
     }
-  }, [state?.final_output?.content, streamedContent]);
+  }, [state?.final_output?.content]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -182,267 +167,166 @@ const Dashboard = () => {
     }
   };
 
-  const downloadPDF = () => {
-    window.print();
-  };
-
+  const downloadPDF = () => window.print();
   const currentStage = state?.current_stage || "parser";
 
   return (
-    <div className="min-h-screen bg-background text-foreground bg-grid relative selection:bg-primary/30">
-      <div className="print:hidden">
-        <NeuralBackground />
-        <div className="fixed inset-0 radial-glow pointer-events-none" />
-      </div>
-
-      {/* Navigation */}
+    <div className="min-h-screen bg-background text-foreground relative selection:bg-primary/20">
       <Navbar onHistoryClick={() => setIsHistoryOpen(true)} />
 
-      <main className="max-w-7xl mx-auto px-8 pt-32 pb-20 relative z-10">
+      <main className="max-w-4xl mx-auto px-6 pt-32 pb-20 relative z-10 space-y-12">
         
         {/* Hero Section */}
-        <section className="mb-12 space-y-12 print:hidden">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div className="space-y-8">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 border border-primary/20 rounded-full text-primary text-[10px] font-black uppercase tracking-widest">
-                <Brain size={12} />
-                Autonomous Intellectual Asset Synthesis
-              </div>
-              <h1 className="text-6xl xl:text-7xl font-black font-heading leading-[1] tracking-tighter">
-                The Future of <br/> <span className="shimmer-text italic">Agentic Output</span>.
-              </h1>
-              <p className="text-xl text-text-dim max-w-2xl font-medium leading-relaxed">
-                Orion is an autonomous orchestration layer that synchronizes multiple specialized LLM agents into a high-density intelligence pipeline.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-               {[
-                 { icon: <Target size={14} />, label: "Goal-Oriented", desc: "Precision directives" },
-                 { icon: <Workflow size={14} />, label: "Pipeline-Driven", desc: "Sequential processing" },
-                 { icon: <Layers size={14} />, label: "Multi-Agent", desc: "Collaborative swarms" },
-                 { icon: <Zap size={14} />, label: "Neural Speed", desc: "Sub-second inference" }
-               ].map((item, i) => (
-                 <div key={i} className="p-6 bg-surface/50 border border-border rounded-2xl space-y-3">
-                    <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center text-primary">{item.icon}</div>
-                    <div>
-                      <div className="text-[11px] font-black uppercase tracking-widest text-foreground">{item.label}</div>
-                      <div className="text-[10px] text-text-muted font-bold">{item.desc}</div>
-                    </div>
-                 </div>
-               ))}
-            </div>
+        <section className="text-center space-y-6 print:hidden">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 border border-primary/20 rounded-full text-primary text-xs font-bold uppercase tracking-wider shadow-sm">
+            <Brain size={14} />
+            Multi-Agent Synthesis
           </div>
-
-          <div className="gradient-border p-8 bg-surface/50 backdrop-blur-xl">
-             <div className="flex items-center justify-between mb-12">
-                <div className="flex items-center gap-4">
-                   <h2 className="text-[11px] font-black uppercase tracking-[0.4em] text-primary">Live Neural Orchestration</h2>
-                   <div className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
-                </div>
-                <div className="px-4 py-1.5 bg-primary/10 rounded-full text-[10px] font-black text-primary border border-primary/20">v2.0.4-LUMINA</div>
-             </div>
-             <PipelineStepper currentStage={currentStage} isProcessing={loading} />
-          </div>
+          <h1 className="text-6xl xl:text-7xl font-black font-heading leading-[1] tracking-tighter text-foreground mb-4">
+            The <span className="shimmer-text italic">Video Script</span> Engine.
+          </h1>
+          <p className="text-lg text-text-dim max-w-2xl mx-auto font-medium">
+            An autonomous orchestration layer that synchronizes multiple specialized LLM agents into a high-retention video script writing pipeline.
+          </p>
         </section>
 
-        <div className="grid grid-cols-1 xl:grid-cols-[350px_1fr] gap-12">
-          
-          {/* Sidebar */}
-          <aside className="space-y-12">
+        {/* Command Input Card */}
+        <div className="glass-panel rounded-2xl p-6 md:p-8 print:hidden relative overflow-hidden">
+          <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+          <div className="relative z-10">
+            <div className="flex items-center gap-3 mb-6">
+              <TerminalIcon size={20} className="text-primary" />
+              <h3 className="text-base font-bold text-foreground">Command Input</h3>
+            </div>
+            <form onSubmit={handleSubmit} className="space-y-6">
+            <textarea
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              placeholder="Describe the video topic, platform, and target duration..."
+              className="w-full bg-background border border-border rounded-xl p-5 min-h-[140px] focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none text-base text-foreground placeholder:text-text-muted"
+            />
             
-            {/* Command Card */}
-            <div className="bg-surface border border-border rounded-3xl p-8 shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 p-4 opacity-5">
-                 <Zap size={120} fill="currentColor" />
-              </div>
-              <div className="relative z-10 space-y-6">
-                <div className="flex items-center gap-3">
-                  <TerminalIcon size={18} className="text-primary" />
-                  <h3 className="text-sm font-black uppercase tracking-widest">Neural Command</h3>
-                </div>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <textarea
-                    value={prompt}
-                    onChange={(e) => setPrompt(e.target.value)}
-                    placeholder="Describe the intellectual asset to synthesize..."
-                    className="w-full bg-background/50 border border-border rounded-2xl p-6 min-h-[180px] focus:border-primary outline-none transition-all resize-none text-base font-medium placeholder:text-text-muted"
-                  />
-                  <button
-                    type="submit"
-                    disabled={loading || !prompt}
-                    className="w-full btn-glow py-4 rounded-2xl flex items-center justify-center gap-3 text-[11px] font-black uppercase tracking-widest text-white disabled:opacity-50"
-                  >
-                    {loading ? <Loader2 className="animate-spin" size={18} /> : <Zap size={16} fill="currentColor" />}
-                    Ignite Synthesis
-                  </button>
-                </form>
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {[
+                "Write a 60-second Instagram Reel about the new Antigravity 2.0 release.",
+                "A 10-minute YouTube deep dive into Claude 4.6 and its capabilities.",
+                "Create a fast-paced TikTok script explaining quantum computing to beginners.",
+                "A cinematic 5-minute YouTube video about the history of microservices."
+              ].map((example, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => setPrompt(example)}
+                  className="text-left p-3 text-xs font-medium bg-surface-hover border border-border rounded-lg hover:border-primary/50 transition-colors text-text-dim hover:text-foreground flex items-start gap-2"
+                >
+                  <Sparkles size={14} className="text-primary mt-0.5 shrink-0" />
+                  <span>{example}</span>
+                </button>
+              ))}
             </div>
 
-            {/* Neural Log Stream */}
-            <div className="bg-[#010409] border border-border rounded-3xl overflow-hidden h-[360px] flex flex-col shadow-inner">
-              <div className="px-6 py-4 bg-surface/30 border-b border-border flex items-center justify-between backdrop-blur-md">
-                <span className="text-[10px] font-mono font-bold text-text-muted uppercase tracking-[0.2em] flex items-center gap-2">
-                   <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                   Stream_Output.raw
-                </span>
-              </div>
-              <div ref={scrollRef} className="p-8 flex-1 overflow-y-auto font-mono text-[12px] text-text-muted leading-relaxed scrollbar-hide">
-                {state?.logs?.map((log, i) => (
-                  <div key={i} className="mb-3 border-l-2 border-primary/10 pl-4 py-1 hover:bg-white/[0.02] transition-colors">
-                    <span className="text-primary/40 font-bold tracking-tighter">[{log.timestamp.split(' ')[1]}]</span> <br/>
-                    <span className="text-foreground/80 font-black uppercase tracking-widest mr-2">{log.agent}:</span> 
-                    <span className="text-text-dim">{log.message}</span>
-                  </div>
-                )) || (
-                  <div className="h-full flex flex-col items-center justify-center text-center opacity-10">
-                     <TerminalIcon size={48} className="mb-4" />
-                     <p className="font-mono uppercase tracking-widest">Awaiting Link</p>
-                  </div>
-                )}
-              </div>
-            </div>
-
-          </aside>
-
-          {/* Viewer Area */}
-          <div className="min-h-[800px] pb-40">
-            <AnimatePresence mode="wait">
-              {state?.final_output ? (
-                <motion.div key="result" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="space-y-12">
-                  <div className="flex justify-end print:hidden">
-                    <button 
-                      onClick={downloadPDF} 
-                      className="flex items-center gap-4 px-8 py-4 bg-primary text-white hover:brightness-110 rounded-2xl transition-all text-xs font-black uppercase tracking-widest shadow-[0_0_20px_rgba(6,182,212,0.3)]"
-                    >
-                        <Download size={18} />
-                        Export Intel PDF
-                    </button>
-                  </div>
-
-                  <div id="print-area" ref={contentRef} className="space-y-12 bg-background p-8 rounded-[4rem] print:p-0 print:m-0">
-                    {/* Radar Chart Section */}
-                    <div className="grid grid-cols-1 lg:grid-cols-[1fr_260px] gap-8">
-                       <div className="bg-surface border border-border p-10 rounded-3xl flex items-center justify-center">
-                          <RadarChart data={state.evaluation_results || {}} />
-                       </div>
-                       <div className="space-y-4">
-                          {state.evaluation_results && Object.entries(state.evaluation_results).map(([key, value]) => (
-                             <div key={key} className="bg-surface border border-border p-5 rounded-2xl flex items-center justify-between">
-                                <span className="text-[12px] font-black uppercase tracking-widest text-text-muted">{key.replace('_', ' ')}</span>
-                                <span className="text-xl font-black font-heading text-primary">{value}</span>
-                             </div>
-                          ))}
-                       </div>
-                    </div>
-
-                    {/* Intelligence Asset Card */}
-                    <div className="bg-surface border border-border rounded-[3.5rem] overflow-hidden shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)] relative bg-background">
-                      <div className="h-2 w-full bg-gradient-to-r from-primary via-blue-500 to-purple-600" />
-                      <div className="p-16 md:p-24 lg:p-32">
-                        <div className="flex flex-col md:flex-row justify-between items-start gap-12 mb-24">
-                          <div className="space-y-6">
-                             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-success-dim border border-success/20 rounded-full text-success text-[10px] font-black uppercase tracking-widest">
-                               <CheckCircle2 size={12} />
-                               Intelligence Synthesis Verified
-                             </div>
-                             <h2 className="text-5xl md:text-6xl font-black font-heading tracking-tighter italic leading-[1.1] max-w-2xl">The Architect <br/> Intelligence Asset</h2>
-                          </div>
-                        </div>
-
-                      <article className="prose prose-invert max-w-none prose-xl">
-                         <div className="whitespace-pre-wrap text-text-dim/90 text-xl leading-[1.8] font-medium font-body first-letter:text-7xl first-letter:font-black first-letter:text-primary first-letter:mr-4 first-letter:float-left">
-                           {streamedContent}
-                           {streamedContent.length < (state?.final_output?.content?.length || 0) && (
-                             <motion.span 
-                               animate={{ opacity: [1, 0] }}
-                               transition={{ repeat: Infinity, duration: 0.5 }}
-                               className="inline-block w-2 h-8 bg-primary ml-1 translate-y-1"
-                             />
-                           )}
-                         </div>
-                      </article>
-
-                      <div className="mt-32 pt-12 border-t border-white/5 flex justify-between items-center text-[10px] font-black uppercase tracking-[0.3em] text-text-muted">
-                        <div>Content Agent System // Asset-{taskId?.slice(0, 8)}</div>
-                        <div>Generated {new Date().toLocaleDateString()} // Confidential</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-              ) : (
-                <motion.div key="idle" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-24 print:hidden">
-                   
-                   {/* Centered Empty State */}
-                   <div className="flex flex-col items-center justify-center text-center pt-12">
-                      <div className="relative mb-16 group">
-                         <div className="absolute inset-0 bg-primary blur-[100px] opacity-20 group-hover:opacity-40 transition-opacity animate-pulse" />
-                         <div className="w-48 h-48 bg-surface rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex items-center justify-center border border-border relative z-10 hover:rotate-3 transition-transform">
-                            <Sparkles size={80} className="text-primary" />
-                         </div>
-                      </div>
-                      <div className="max-w-2xl space-y-8">
-                         <h2 className="text-4xl md:text-5xl font-black font-heading uppercase italic tracking-tighter leading-none">Awaiting Neural Sequence.</h2>
-                         <p className="text-text-dim text-xl font-medium leading-relaxed">
-                            Input a directive to activate the Content Agent swarm. Our agents will collaboratively synthesize high-fidelity intellectual assets through multi-stage peer refinement.
-                         </p>
-                      </div>
-                   </div>
-
-                   {/* Protocol Overview */}
-                   <div id="about" className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                      {[
-                        { title: "Agentic Swarms", icon: <Brain />, desc: "Multiple specialized agents work in sequence to ensure depth and factual integrity." },
-                        { title: "Neural Synthesis", icon: <Zap />, desc: "Advanced semantic processing transforms complex briefs into structured narratives." },
-                        { title: "Metric Validation", icon: <Target />, desc: "Every output is automatically graded against benchmarks for factual and tonal accuracy." }
-                      ].map((box, i) => (
-                        <div key={i} className="bg-surface/50 border border-border p-10 rounded-[2.5rem] space-y-6 hover:-translate-y-2 transition-transform">
-                           <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20">
-                              {box.icon}
-                           </div>
-                           <h3 className="text-sm font-black uppercase tracking-widest leading-none">{box.title}</h3>
-                           <p className="text-xs text-text-muted font-medium leading-relaxed">{box.desc}</p>
-                        </div>
-                      ))}
-                   </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            <button
+              type="submit"
+              disabled={loading || !prompt}
+              className="w-full btn-primary py-3.5 rounded-xl flex items-center justify-center gap-2 text-sm font-bold text-white shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? <Loader2 className="animate-spin" size={18} /> : <Zap size={18} />}
+              Ignite Synthesis
+            </button>
+          </form>
           </div>
         </div>
+
+        {/* Live Stepper */}
+        {(loading || state) && (
+          <div className="glass-panel p-8 rounded-2xl print:hidden">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-sm font-bold text-foreground">Pipeline Status</h2>
+              <div className="px-3 py-1 bg-primary/5 rounded-full text-xs font-semibold text-primary border border-primary/10">v2.0.4-LUMINA</div>
+            </div>
+            <PipelineStepper currentStage={currentStage} isProcessing={loading} />
+          </div>
+        )}
+
+        {/* Viewer Area */}
+        <AnimatePresence mode="wait">
+          {state?.final_output && (
+            <motion.div key="result" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-8">
+              <div className="flex justify-end print:hidden">
+                <button 
+                  onClick={downloadPDF} 
+                  className="flex items-center gap-2 px-6 py-2.5 bg-surface border border-border hover:bg-surface-hover hover:border-primary/30 rounded-lg transition-all text-sm font-bold text-foreground shadow-sm"
+                >
+                    <Download size={16} className="text-primary" />
+                    Export PDF
+                </button>
+              </div>
+
+              <div id="print-area" ref={contentRef} className="space-y-8 print:p-0 print:m-0">
+                {/* Radar Chart Section */}
+                <div className="glass-panel p-8 rounded-2xl grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                   <div className="flex justify-center">
+                      <RadarChart data={state.evaluation_results || {}} />
+                   </div>
+                   <div className="space-y-3">
+                      <h3 className="text-lg font-bold text-foreground mb-4">Evaluation Metrics</h3>
+                      {state.evaluation_results && Object.entries(state.evaluation_results).map(([key, value]) => (
+                         <div key={key} className="bg-surface border border-border p-4 rounded-xl flex items-center justify-between shadow-sm">
+                            <span className="text-sm font-semibold capitalize text-text-dim">{key.replace('_', ' ')}</span>
+                            <span className="text-lg font-bold text-primary">{value}</span>
+                         </div>
+                      ))}
+                   </div>
+                </div>
+
+                {/* Final Output Content */}
+                <div className="glass-panel rounded-2xl overflow-hidden shadow-sm relative">
+                  <div className="h-1.5 w-full bg-gradient-to-r from-orange-400 to-rose-500" />
+                  <div className="p-8 md:p-12">
+                    <div className="flex items-center gap-2 px-3 py-1 bg-success-dim border border-success/20 rounded-full text-success text-xs font-bold mb-8 w-fit">
+                      <CheckCircle2 size={14} />
+                      Synthesis Verified
+                    </div>
+
+                    <article className="prose prose-slate max-w-none prose-lg">
+                       <div className="whitespace-pre-wrap text-text-dim text-lg leading-relaxed first-letter:text-5xl first-letter:font-bold first-letter:text-primary first-letter:mr-2 first-letter:float-left">
+                         {streamedContent}
+                         {streamedContent.length < (state?.final_output?.content?.length || 0) && (
+                           <motion.span 
+                             animate={{ opacity: [1, 0] }}
+                             transition={{ repeat: Infinity, duration: 0.5 }}
+                             className="inline-block w-2 h-6 bg-primary ml-1 translate-y-1"
+                           />
+                         )}
+                       </div>
+                    </article>
+
+                    <div className="mt-16 pt-8 border-t border-border flex justify-between items-center text-xs font-medium text-text-muted">
+                      <div>Content Agent System // Task-{taskId?.slice(0, 8)}</div>
+                      <div>{new Date().toLocaleDateString()}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
       </main>
 
-      <footer className="max-w-7xl mx-auto px-8 py-16 border-t border-border mt-20 print:hidden">
-         <div className="flex flex-col md:flex-row items-center justify-between gap-12">
-            <div className="flex items-center gap-4 opacity-40">
-               <Zap size={20} fill="currentColor" className="text-primary" />
-               <span className="text-xs font-black uppercase tracking-[0.3em]">CONTENT AGENT SYSTEM © 2026</span>
+      <footer className="border-t border-border mt-12 bg-surface print:hidden">
+         <div className="max-w-4xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-3">
+               <Zap size={16} className="text-primary" />
+               <span className="text-sm font-bold text-foreground">Content Agent System</span>
             </div>
-            
-            <div className="flex items-center gap-8 bg-surface/50 px-6 py-3 rounded-2xl border border-border">
-               <div className="flex items-center gap-2">
-                  <Activity size={14} className="text-primary" />
-                  <span className="text-[10px] font-black uppercase tracking-widest text-text-dim">Latency: <span className="text-foreground">84ms</span></span>
-               </div>
-               <div className="w-[1px] h-4 bg-border" />
-               <div className="flex items-center gap-2">
-                  <Server size={14} className="text-blue-400" />
-                  <span className="text-[10px] font-black uppercase tracking-widest text-text-dim">Workers: <span className="text-foreground">6 Active</span></span>
-               </div>
-               <div className="w-[1px] h-4 bg-border" />
-               <div className="flex items-center gap-2">
-                  <Database size={14} className="text-emerald-400" />
-                  <span className="text-[10px] font-black uppercase tracking-widest text-text-dim">Broker: <span className="text-foreground">Redis-Secure</span></span>
-               </div>
-            </div>
-
-            <div className="flex items-center gap-6 text-[10px] font-bold uppercase tracking-widest text-text-muted">
-               <span className="px-2 py-1 bg-success/10 text-success rounded border border-success/20">System Stable</span>
+            <div className="flex items-center gap-6 text-sm font-medium text-text-dim">
+               <span className="flex items-center gap-2"><Activity size={14} className="text-primary"/> 84ms</span>
+               <span className="flex items-center gap-2"><Server size={14} className="text-blue-500"/> 6 Active</span>
             </div>
          </div>
       </footer>
+
       {/* History Sidebar */}
       <AnimatePresence>
         {isHistoryOpen && (
@@ -452,26 +336,26 @@ const Dashboard = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsHistoryOpen(false)}
-              className="fixed inset-0 bg-background/80 backdrop-blur-sm z-[100]"
+              className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[100]"
             />
             <motion.aside
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed right-0 top-0 h-full w-[400px] bg-surface border-l border-border z-[101] p-10 flex flex-col shadow-2xl"
+              className="fixed right-0 top-0 h-full w-[380px] bg-surface border-l border-border z-[101] flex flex-col shadow-xl"
             >
-              <div className="flex items-center justify-between mb-12">
-                 <div className="flex items-center gap-3">
-                    <HistoryIcon className="text-primary" size={20} />
-                    <h3 className="text-sm font-black uppercase tracking-widest">Intelligence Archive</h3>
+              <div className="p-6 border-b border-border flex items-center justify-between bg-surface">
+                 <div className="flex items-center gap-2 text-foreground">
+                    <HistoryIcon size={18} />
+                    <h3 className="font-bold">Intelligence Archive</h3>
                  </div>
-                 <button onClick={() => setIsHistoryOpen(false)} className="hover:text-primary transition-colors">
-                    <X size={20} />
+                 <button onClick={() => setIsHistoryOpen(false)} className="p-2 hover:bg-background rounded-md text-text-muted transition-colors">
+                    <X size={18} />
                  </button>
               </div>
 
-              <div className="flex-1 overflow-y-auto space-y-4 scrollbar-hide">
+              <div className="flex-1 overflow-y-auto p-4 space-y-3">
                  {history.length > 0 ? history.map((item) => (
                     <button
                       key={item.task_id}
@@ -485,24 +369,23 @@ const Dashboard = () => {
                          setIsHistoryOpen(false);
                          tacticalAudio.playPulse();
                       }}
-                      className="w-full text-left p-6 bg-background/50 border border-border rounded-2xl hover:border-primary/30 transition-all group"
+                      className="w-full text-left p-4 bg-background border border-border rounded-xl hover:border-primary/50 transition-all group shadow-sm"
                     >
-                       <div className="flex items-center justify-between mb-3">
-                          <div className="flex items-center gap-2 text-[10px] font-bold text-text-muted">
-                             <Clock size={12} />
+                       <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-1.5 text-xs font-medium text-text-muted">
+                             <Clock size={14} />
                              {new Date(item.created_at).toLocaleDateString()}
                           </div>
-                          <ArrowRight size={14} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all text-primary" />
+                          <ArrowRight size={14} className="text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
                        </div>
-                       <p className="text-xs font-bold text-foreground line-clamp-2 mb-2 leading-relaxed">
+                       <p className="text-sm font-semibold text-foreground line-clamp-2 leading-relaxed">
                           {item.prompt}
                        </p>
-                       <div className="text-[9px] font-black uppercase tracking-widest text-primary/60">ID: {item.task_id.slice(0, 8)}</div>
                     </button>
                  )) : (
-                    <div className="h-full flex flex-col items-center justify-center opacity-20 text-center">
-                       <HistoryIcon size={48} className="mb-4" />
-                       <p className="text-[10px] font-black uppercase tracking-widest">Archive Empty</p>
+                    <div className="h-full flex flex-col items-center justify-center text-text-muted text-center p-6">
+                       <HistoryIcon size={40} className="mb-3 opacity-20" />
+                       <p className="text-sm font-medium">Archive Empty</p>
                     </div>
                  )}
               </div>

@@ -1,5 +1,5 @@
 from app.agents.base_agent import BaseAgent
-from app.schemas.agent_schemas import ContentDraft, FeedbackReport, StructuredTask, DraftSection
+from app.schemas.agent_schemas import ContentDraft, FeedbackReport, StructuredTask
 from loguru import logger
 
 class OptimizerAgent(BaseAgent):
@@ -24,13 +24,14 @@ class OptimizerAgent(BaseAgent):
         # For simplicity in this initial version, we pass the draft and feedback to refine the whole context
         # but instruct the model to be targeted.
         user_prompt = (
-            f"Optimize the following draft based on the feedback report:\n"
+            f"Optimize the following video script draft based on the producer's feedback report:\n"
             f"Topic: {task.topic}\n"
+            f"Platform: {task.platform}\n"
             f"Tone: {task.tone}\n\n"
-            f"Original Draft:\n{draft.full_text}\n\n"
+            f"Original Script:\n{draft.full_text}\n\n"
             f"Feedback Items:\n{feedback.model_dump_json()}\n\n"
-            f"Rewrite the draft to incorporate the feedback while maintaining the overall flow.\n"
-            f"IMPORTANT: You must return a complete 'ContentDraft' object containing both the 'sections' list AND the 'full_text' string (which should be the concatenated sections)."
+            f"Rewrite the scenes to incorporate the feedback while maintaining the overall pacing and visual flow.\n"
+            f"IMPORTANT: You must return a complete 'ContentDraft' object containing both the 'scenes' list AND the 'full_text' string (which should be the concatenated scenes)."
         )
         
         # We expect a refined ContentDraft back.

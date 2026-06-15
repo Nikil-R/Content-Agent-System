@@ -13,29 +13,32 @@ class TaskRequest(BaseModel):
 
 class StructuredTask(BaseModel):
     topic: str
+    platform: str = Field(..., description="e.g. YouTube, Instagram Reel, TikTok")
+    target_duration: str = Field(..., description="e.g. 60 seconds, 10 minutes")
     tone: str
     audience: str
-    format: str
-    word_count: int
+    visual_style: str = Field(..., description="e.g. Fast-paced cuts, Cinematic B-roll, Talking Head")
     keywords: List[str]
-    angle: str = Field(..., description="The unique perspective or hook for the content")
+    angle: str = Field(..., description="The unique perspective or hook for the video")
 
-class ContentSection(BaseModel):
-    title: str
-    description: str
-    estimated_word_count: int
+class ScriptScene(BaseModel):
+    scene_number: int
+    scene_title: str
+    visual_cue: str = Field(..., description="What the viewer sees (A-roll, B-roll, Text on screen)")
+    estimated_duration_seconds: int
 
-class ContentOutline(BaseModel):
+class ScriptOutline(BaseModel):
     title: str
-    sections: List[ContentSection]
+    scenes: List[ScriptScene]
 
-class DraftSection(BaseModel):
-    title: str
-    content: str
+class DraftScene(BaseModel):
+    scene_number: int
+    visuals: str = Field(..., description="Visual instructions and B-roll notes")
+    audio_dialogue: str = Field(..., description="The spoken script, voiceover, or sound effects")
 
 class ContentDraft(BaseModel):
-    sections: List[DraftSection]
-    full_text: str
+    scenes: List[DraftScene]
+    full_text: Optional[str] = None
 
 class FeedbackItem(BaseModel):
     section_title: str
@@ -75,7 +78,7 @@ class SharedState(BaseModel):
     task_id: str
     original_request: TaskRequest
     structured_task: Optional[StructuredTask] = None
-    outline: Optional[ContentOutline] = None
+    outline: Optional[ScriptOutline] = None
     draft: Optional[ContentDraft] = None
     feedback: Optional[FeedbackReport] = None
     final_output: Optional[FinalOutput] = None

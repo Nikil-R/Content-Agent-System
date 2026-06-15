@@ -9,58 +9,58 @@ import { Navbar } from '../components/Navbar';
 
 const AGENTS = [
   {
-    name: "Lexis",
-    role: "Linguistic Parser",
+    name: "Producer",
+    role: "Video Strategist",
     icon: <Zap size={32} />,
     color: "from-cyan-400 to-blue-500",
-    description: "The gatekeeper of intent. Lexis decomposes user directives into granular semantic tokens, ensuring the machine understands the nuance of human request.",
-    capability: "Intent Decomposition & Keyword Extraction",
-    focus: "Semantic Accuracy"
+    description: "The visionary. The Producer breaks down the core topic, platform constraints, and target duration to set the strategic direction for the video.",
+    capability: "Platform Targeting & Concept Extraction",
+    focus: "Strategic Alignment"
   },
   {
-    name: "Architect",
-    role: "Structural Strategist",
+    name: "Director",
+    role: "Timeline Architect",
     icon: <Compass size={32} />,
     color: "from-blue-500 to-indigo-600",
-    description: "The blueprint generator. Architect designs the logical flow and skeletal structure of the asset, mapping out chapters, hierarchies, and narrative arcs.",
-    capability: "Hierarchical Planning & Blueprinting",
-    focus: "Logical Consistency"
+    description: "The timeline architect. The Director designs the pacing and structure, mapping out the critical hook, B-roll sequences, and calls to action.",
+    capability: "Pacing & Scene Blocking",
+    focus: "Viewer Retention"
   },
   {
-    name: "Scribe",
+    name: "Screenwriter",
     role: "Core Generator",
     icon: <PenTool size={32} />,
     color: "from-indigo-500 to-purple-600",
-    description: "The primary synthesizer. Scribe transforms the blueprint into rich, technical content, balancing complex data with narrative elegance.",
-    capability: "Multi-Modal Synthesis & High-Density Writing",
-    focus: "Narrative Flow"
+    description: "The creative engine. The Screenwriter generates the dual-column script, providing exact visual cues and engaging audio dialogue or voice-overs.",
+    capability: "Visual Cueing & Dialogue Synthesis",
+    focus: "Creative Execution"
   },
   {
-    name: "Sentinel",
+    name: "Auditor",
     role: "Quality Gatekeeper",
     icon: <ShieldCheck size={32} />,
     color: "from-purple-500 to-pink-600",
-    description: "The merciless critic. Sentinel audits every line for factual integrity, tone consistency, and objective neutrality, flagging any deviations.",
-    capability: "Fact Verification & Bias Detection",
-    focus: "Integrity Audit"
+    description: "The retention critic. The Auditor ruthlessly reviews the script for weak hooks, pacing lulls, and unengaging visuals, flagging any risks to watch time.",
+    capability: "Hook Analysis & Retention Auditing",
+    focus: "Engagement Integrity"
   },
   {
-    name: "Refiner",
-    role: "Semantic Polisher",
+    name: "Optimizer",
+    role: "Script Polisher",
     icon: <TrendingUp size={32} />,
     color: "from-pink-500 to-rose-600",
-    description: "The aesthetic optimizer. Refiner focuses on vocabulary elevation and syntactic complexity, ensuring the final asset resonates with authority.",
-    capability: "Vocabulary Enhancement & Grammar Optimization",
-    focus: "Polished Excellence"
+    description: "The dynamic editor. The Optimizer refines the script based on the audit, tightening dialogue, enhancing visual impact, and perfecting the final hook.",
+    capability: "Pacing Enhancement & Hook Polishing",
+    focus: "Maximum Impact"
   },
   {
-    name: "Judge",
+    name: "Analytics Engine",
     role: "Metric Analyst",
     icon: <BarChart3 size={32} />,
     color: "from-rose-500 to-orange-600",
-    description: "The final validator. Judge analyzes the completed asset against six core cognitive metrics, producing the visual Radar Chart and final score.",
-    capability: "Statistical Evaluation & Metric Analysis",
-    focus: "Quality Quantification"
+    description: "The final evaluator. The Analytics Engine scores the completed script against core YouTube/TikTok metrics like visual engagement and hook strength.",
+    capability: "Statistical Evaluation & Retention Prediction",
+    focus: "Algorithm Optimization"
   }
 ];
 
@@ -80,10 +80,10 @@ const AgentsPage: React.FC = () => {
               Cognitive Architecture
            </div>
            <h1 className="text-6xl xl:text-7xl font-black font-heading leading-[1] tracking-tighter">
-             Meet the <br/> <span className="shimmer-text italic">Cognitive Swarm</span>.
+             Meet the <br/> <span className="shimmer-text italic">Production Team</span>.
            </h1>
            <p className="text-xl text-text-dim font-medium leading-relaxed">
-             Content Agent System is not a single model. It is a synchronized orchestra of six specialized agents, each fine-tuned for a specific phase of the intellectual synthesis lifecycle.
+             The Video Script Engine is not a single model. It is a synchronized orchestra of six specialized agents, each fine-tuned for a specific phase of the high-retention video production lifecycle.
            </p>
         </header>
 
@@ -132,7 +132,7 @@ const AgentsPage: React.FC = () => {
       <footer className="max-w-7xl mx-auto px-8 py-16 border-t border-border mt-20 flex flex-col md:flex-row items-center justify-between gap-12 opacity-40">
          <div className="flex items-center gap-4">
             <Zap size={20} fill="currentColor" className="text-primary" />
-            <span className="text-xs font-black uppercase tracking-[0.3em]">CONTENT AGENT SYSTEM © 2026</span>
+            <span className="text-xs font-black uppercase tracking-[0.3em]">VIDEO SCRIPT ENGINE © 2026</span>
          </div>
       </footer>
     </div>

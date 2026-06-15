@@ -30,10 +30,10 @@ const ArchitecturePage: React.FC = () => {
               Architecture & Protocol
            </div>
            <h1 className="text-6xl xl:text-7xl font-black font-heading leading-[1] tracking-tighter">
-             The <span className="shimmer-text italic">Distributed Intelligence</span> Protocol.
+             The <span className="shimmer-text italic">Video Production</span> Protocol.
            </h1>
            <p className="text-xl text-text-dim font-medium leading-relaxed">
-             The Content Agent System is built on a distributed agentic framework that prioritizes asynchronous execution, state isolation, and collaborative synthesis.
+             The Video Script Engine is built on a distributed agentic framework that prioritizes asynchronous execution, state isolation, and collaborative creative production.
            </p>
         </header>
 
@@ -101,9 +101,9 @@ const ArchitecturePage: React.FC = () => {
               </div>
               <div className="max-w-3xl relative z-10 space-y-12">
                  <div className="space-y-4">
-                    <h2 className="text-4xl font-black font-heading tracking-tight">The "Shared State" Pipeline</h2>
+                     <h2 className="text-4xl font-black font-heading tracking-tight">The "Shared State" Pipeline</h2>
                     <p className="text-lg text-text-dim font-medium leading-relaxed">
-                      Unlike traditional linear scripts, the Content Agent System agents communicate via a centralized <strong>SharedState</strong> schema. This allows for non-destructive, additive intelligence gathering where each agent validates the previous one's output before contributing.
+                      Unlike traditional linear scripts, the Video Script Engine agents communicate via a centralized <strong>SharedState</strong> schema. This allows for non-destructive, additive script building where each agent validates the previous one's output before contributing.
                     </p>
                  </div>
 
@@ -124,7 +124,7 @@ const ArchitecturePage: React.FC = () => {
                        </div>
                        <div className="space-y-2">
                           <h4 className="text-xl font-bold font-heading">2. Distributed Execution</h4>
-                          <p className="text-sm text-text-muted leading-relaxed">Celery workers pull the task and route it through the 6 specialized agents. Each agent performs its cognitive function and updates the state in Redis.</p>
+                          <p className="text-sm text-text-muted leading-relaxed">Celery workers pull the task and route it through the 6 specialized production agents. Each agent performs its creative function and updates the state in Redis.</p>
                        </div>
                     </div>
 
@@ -134,7 +134,7 @@ const ArchitecturePage: React.FC = () => {
                        </div>
                        <div className="space-y-2">
                           <h4 className="text-xl font-bold font-heading">3. Metric Validation</h4>
-                          <p className="text-sm text-text-muted leading-relaxed">The final Judge agent performs a statistical audit. Once metrics clear the threshold, the state is marked as <code>COMPLETED</code> and pushed to the UI via Webhooks.</p>
+                          <p className="text-sm text-text-muted leading-relaxed">The final Analytics agent performs a retention audit. Once metrics clear the threshold, the script is marked as <code>COMPLETED</code> and pushed to the UI via Webhooks.</p>
                        </div>
                     </div>
                  </div>
@@ -150,21 +150,21 @@ const ArchitecturePage: React.FC = () => {
                  <h4 className="text-lg font-black font-heading text-primary">Decoupled Execution</h4>
                  <p className="text-sm text-text-dim leading-relaxed">
                    <strong>Choice:</strong> Celery/Redis over simple FastAPI async tasks. <br/><br/>
-                   <strong>Rationale:</strong> LLM synthesis is compute-heavy. Decoupling the execution layer ensures the web server remains responsive even when processing high-density assets.
+                   <strong>Rationale:</strong> LLM synthesis is compute-heavy. Decoupling the execution layer ensures the web server remains responsive even when processing high-retention video scripts.
                  </p>
               </div>
               <div className="space-y-4">
                  <h4 className="text-lg font-black font-heading text-blue-400">Additive State Machine</h4>
                  <p className="text-sm text-text-dim leading-relaxed">
                    <strong>Choice:</strong> Shared JSON state over linear variable passing. <br/><br/>
-                   <strong>Rationale:</strong> Allows for non-destructive auditing. If the 'Refiner' agent fails, we still have the 'Scribe' output preserved in Redis for easy recovery.
+                   <strong>Rationale:</strong> Allows for non-destructive auditing. If the 'Optimizer' agent fails, we still have the 'Screenwriter' output preserved in Redis for easy recovery.
                  </p>
               </div>
               <div className="space-y-4">
                  <h4 className="text-lg font-black font-heading text-emerald-400">Cognitive Specialization</h4>
                  <p className="text-sm text-text-dim leading-relaxed">
                    <strong>Choice:</strong> 6 specialized agents over 1 generic agent. <br/><br/>
-                   <strong>Rationale:</strong> Higher prompt-to-output accuracy. By limiting each agent's scope (e.g., just grammar or just planning), we reduce hallucination rates.
+                   <strong>Rationale:</strong> Higher prompt-to-output accuracy. By limiting each agent's scope (e.g., just dialogue or just timeline planning), we maximize creative quality.
                  </p>
               </div>
            </div>
@@ -175,7 +175,7 @@ const ArchitecturePage: React.FC = () => {
            <div className="space-y-8">
               <h2 className="text-4xl font-black font-heading tracking-tight leading-none">Engineering <br/> Excellence.</h2>
               <p className="text-xl text-text-dim font-medium leading-relaxed">
-                This architecture was designed to simulate a high-performance R&D environment. By decoupling the UI from the execution layer, we ensure the system is resilient to network latency and capable of handling long-running cognitive tasks without blocking the main thread.
+                This architecture was designed to simulate a high-performance R&D environment. By decoupling the UI from the execution layer, we ensure the system is resilient to network latency and capable of handling long-running creative tasks without blocking the main thread.
               </p>
            </div>
            <div className="grid grid-cols-2 gap-4">
@@ -185,7 +185,7 @@ const ArchitecturePage: React.FC = () => {
               </div>
               <div className="p-8 bg-surface/50 border border-border rounded-3xl text-center space-y-2">
                  <div className="text-4xl font-black text-blue-400">6</div>
-                 <div className="text-[10px] font-black uppercase tracking-widest text-text-muted">Cognitive Nodes</div>
+                 <div className="text-[10px] font-black uppercase tracking-widest text-text-muted">Production Nodes</div>
               </div>
               <div className="p-8 bg-surface/50 border border-border rounded-3xl text-center space-y-2">
                  <div className="text-4xl font-black text-emerald-400">∞</div>
@@ -202,7 +202,7 @@ const ArchitecturePage: React.FC = () => {
       <footer className="max-w-7xl mx-auto px-8 py-16 border-t border-border mt-20 flex flex-col md:flex-row items-center justify-between gap-12 opacity-40">
          <div className="flex items-center gap-4">
             <Zap size={20} fill="currentColor" className="text-primary" />
-            <span className="text-xs font-black uppercase tracking-[0.3em]">CONTENT AGENT SYSTEM © 2026</span>
+            <span className="text-xs font-black uppercase tracking-[0.3em]">VIDEO SCRIPT ENGINE © 2026</span>
          </div>
       </footer>
     </div>

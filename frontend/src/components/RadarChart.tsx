@@ -41,7 +41,7 @@ export const RadarChart: React.FC<RadarChartProps> = ({ data }) => {
             cy={center}
             r={(level / 10) * radius}
             fill="none"
-            stroke="rgba(255,255,255,0.05)"
+            stroke="#E2E8F0"
             strokeWidth="1"
           />
         ))}
@@ -54,19 +54,19 @@ export const RadarChart: React.FC<RadarChartProps> = ({ data }) => {
               y1={center}
               x2={p.x}
               y2={p.y}
-              stroke="rgba(255,255,255,0.1)"
+              stroke="#CBD5E1"
               strokeWidth="1"
             />
             {/* Labels */}
             <text
               x={getPoint(12, i, radius).x}
               y={getPoint(12, i, radius).y}
-              fill="rgba(255,255,255,0.4)"
-              fontSize="9"
-              fontWeight="900"
+              fill="#64748B"
+              fontSize="10"
+              fontWeight="600"
               textAnchor="middle"
               dominantBaseline="middle"
-              className="uppercase tracking-widest font-heading"
+              className="uppercase tracking-wider font-heading"
             >
               {keys[i].replace('_', ' ')}
             </text>
@@ -76,8 +76,8 @@ export const RadarChart: React.FC<RadarChartProps> = ({ data }) => {
         {/* Data Area */}
         <motion.path
           d={polygonPath}
-          fill="rgba(6, 182, 212, 0.2)"
-          stroke="#06B6D4"
+          fill="var(--color-primary-dim)"
+          stroke="var(--color-primary)"
           strokeWidth="2"
           initial={{ pathLength: 0, opacity: 0 }}
           animate={{ pathLength: 1, opacity: 1 }}
@@ -91,7 +91,7 @@ export const RadarChart: React.FC<RadarChartProps> = ({ data }) => {
             cx={p.x}
             cy={p.y}
             r="4"
-            fill="#06B6D4"
+            fill="var(--color-primary)"
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 1 + i * 0.1 }}

@@ -1,40 +1,39 @@
 from app.agents.base_agent import BaseAgent
-from app.schemas.agent_schemas import ContentDraft, ContentOutline, StructuredTask, DraftSection
+from app.schemas.agent_schemas import ContentDraft, ScriptOutline, StructuredTask, DraftScene
 from loguru import logger
 
 class WriterAgent(BaseAgent):
     def __init__(self):
         system_prompt = (
-            "You are a World-Class Ghostwriter and Subject Matter Expert. Your mission is to "
-            "draft high-fidelity prose that sounds human, authoritative, and perfectly "
-            "aligned with the requested tone and audience. You operate in a 'Sectional Write' "
-            "mode—meaning you focus intensely on the specific header and description provided, "
-            "weaving in the unique 'Angle' to ensure the piece is not generic AI-slop. "
-            "Avoid filler, maintain strong sentence variety, and hit every required keyword naturally."
+            "You are a World-Class Screenwriter and Video Director. Your mission is to "
+            "draft high-fidelity, high-retention video scripts that perfectly align with the "
+            "requested tone, audience, and platform (YouTube/Instagram). You operate in a 'Scene-by-Scene' "
+            "mode—meaning you focus intensely on the specific scene provided, writing detailed "
+            "visual instructions (A-roll/B-roll/Text) and engaging spoken dialogue or VoiceOver (Audio). "
+            "Ensure the pacing is perfect, avoid filler words, and hook the viewer instantly."
         )
         super().__init__(role="Writer", system_prompt=system_prompt)
 
-    def execute(self, task: StructuredTask, outline: ContentOutline) -> ContentDraft:
-        draft_sections = []
-        logger.info(f"[Writer] Starting generation for {len(outline.sections)} sections...")
+    def execute(self, task: StructuredTask, outline: ScriptOutline) -> ContentDraft:
+        logger.info(f"[Writer] Starting generation for all {len(outline.scenes)} scenes in a single request...")
 
-        for section in outline.sections:
-            logger.info(f"[Writer] Writing section: {section.title}")
-            user_prompt = (
-                f"Write the following section for a piece of content:\n"
-                f"Topic: {task.topic}\n"
-                f"Tone: {task.tone}\n"
-                f"Audience: {task.audience}\n"
-                f"Section Title: {section.title}\n"
-                f"Section Description: {section.description}\n"
-                f"Keywords to include: {', '.join(task.keywords)}\n\n"
-                f"Respond with the written content for THIS SECTION ONLY."
-            )
-            
-            # For the section content, we don't necessarily need a complex schema,
-            # but we can wrap it in a simple DraftSection model.
-            section_output = self._call_llm(user_prompt, DraftSection)
-            draft_sections.append(section_output)
+        user_prompt = (
+            f"Write the complete video script based on the following outline:\n"
+            f"Platform: {task.platform}\n"
+            f"Visual Style: {task.visual_style}\n"
+            f"Topic: {task.topic}\n"
+            f"Tone: {task.tone}\n\n"
+            f"Outline Scenes:\n{outline.model_dump_json()}\n\n"
+            f"Respond with the detailed Visuals and Audio Dialogue for EVERY SCENE in the outline. "
+            f"Return a complete 'ContentDraft' JSON object with the 'scenes' array."
+        )
+        
+        draft = self._call_llm(user_prompt, ContentDraft)
 
-        full_text = "\n\n".join([s.content for s in draft_sections])
-        return ContentDraft(sections=draft_sections, full_text=full_text)
+        # Build a raw text version of the script
+        full_text_blocks = []
+        for s in draft.scenes:
+            full_text_blocks.append(f"### Scene {s.scene_number}\n**Visual:** {s.visuals}\n**Audio:** {s.audio_dialogue}")
+        draft.full_text = "\n\n".join(full_text_blocks)
+        
+        return draft
